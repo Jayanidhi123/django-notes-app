@@ -18,7 +18,8 @@ pipeline {
             steps {
                 echo "Building the image"
                 script {
-                    docker.build(DOCKER_IMAGE_NAME)
+                    // docker.build(DOCKER_IMAGE_NAME)
+                     bat 'docker build -t my-note-app .'
                 }
             }
         }
@@ -29,7 +30,7 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS, passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
             script {
                 docker.withRegistry('https://hub.docker.com', DOCKER_HUB_USERNAME, DOCKER_HUB_PASSWORD) {
-                    docker.image(DOCKER_IMAGE_NAME).push()
+                    docker.image my-note-app.push()
                 }
             }
         }
