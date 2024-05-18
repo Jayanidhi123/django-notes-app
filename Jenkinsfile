@@ -23,17 +23,18 @@ pipeline {
             }
         }
 
-         stage("Push to Docker Hub") {
-            steps {
-                echo "Pushing the image to Docker Hub"
-                withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS, passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
-                    script {
-                        docker.withRegistry('https://hub.docker.com/u/jayasree1061', DOCKER_HUB_USERNAME, DOCKER_HUB_PASSWORD) {
-                            docker.image(DOCKER_IMAGE_NAME).push()
-                        }
-                    }
+       stage("Push to Docker Hub") {
+    steps {
+        echo "Pushing the image to Docker Hub"
+        withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS, passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
+            script {
+                docker.withRegistry('https://hub.docker.com', DOCKER_HUB_USERNAME, DOCKER_HUB_PASSWORD) {
+                    docker.image(DOCKER_IMAGE_NAME).push()
                 }
             }
         }
+    }
+}
+
     }
 }
